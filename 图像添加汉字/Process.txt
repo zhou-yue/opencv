@@ -11,30 +11,30 @@
 			4 编写makefile编译程序（可参考代码makefile）
 			5 执行程序，可是现在图像上添加英文
 
-			问题：	opencv不支持中文，只能显示英文，中文会乱码
-					解决方法： 	a 链接文字库freetype
-								b 进行文字编码的转换
-								c 将插入的文字定义为宽字节
-								d 在网上下载opencv可支持中文的程序和头文件并进行相应修改
+			问题：   opencv不支持中文，只能显示英文，中文会乱码
+				解决方法： 	a 链接文字库freetype
+					    b 进行文字编码的转换
+					    c 将插入的文字定义为宽字节
+					    d 在网上下载opencv可支持中文的程序和头文件并进行相应修改
 
-					IplImage数据结构生成的图像过大
-					解决方法：	进行IplImage与Mat之间的转换
+				IplImage数据结构生成的图像过大
+				解决方法：	进行IplImage与Mat之间的转换
 
 		图像上插入中文（接着上面的环境继续操作）
 			1 安装编译freetype，zib库（参考安装编译文件夹下的freetype文档）
 			2 学习文字转码的转换，进行文字码制的转换（两种方法）
 				方法a 使用iconv系列函数实现将utf-8编码转为gb2312编码
-						iconv_open	iconv 	iconv_close
+					iconv_open	iconv 	iconv_close
 				方法b 使用mbstowcs和wcstombs
-						安装配置文件	
-							sudo vim /var/lib/locales/supported.d/zh-hans
-							加入以下代码	zh_CN.UTF-8 UTF-8
-											zh_SG.UTF-8 UTF-8
-											zh_CN.GBK GBK
-											zh_CN.GB18030 GB18030
-							更新配置	sudo locale-gen
-							查看		locale -a
-						代码实现	utf-8 -> unicode -> gbk
+					安装配置文件	
+						sudo vim /var/lib/locales/supported.d/zh-hans
+						加入以下代码	   zh_CN.UTF-8 UTF-8
+								zh_SG.UTF-8 UTF-8
+								zh_CN.GBK GBK
+								zh_CN.GB18030 GB18030
+						更新配置	sudo locale-gen
+						查看		locale -a
+					代码实现	utf-8 -> unicode -> gbk
 			3 将插入的文字定义为宽字节，定义插入的文字为wchar_t类型
 			4 修改下载的opencv可支持中文的程序和头文件，里面有一些语法错误，并设置字体的参数，设置为自己子想要的
 			5 在windows下拷贝C:\\WINDOWS\\Fonts目录下需要的字体到ubuntu下的相关目录
