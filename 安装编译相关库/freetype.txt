@@ -3,31 +3,31 @@
 工具：	freetype，zlib，交叉编译工具链
 
 流程：	安装编译freetype，zib库（x86）
-			下载freetype官方源码
-				./configure --prefix=/home/lin/freetype
-				make
-				sudo make install
+		下载freetype官方源码
+			./configure --prefix=/home/lin/freetype
+			make
+			sudo make install
 
-			错误分析：	make时报错Nothing to be done for `unix'
-				    解决方法：进入unix中编译	cd ./builds/unix 	./configure
+		错误分析：	make时报错Nothing to be done for `unix'
+			    解决方法：进入unix中编译	cd ./builds/unix 	./configure
 
-				    在编译我们自己写的图像处理程序时找不到头文件
-				    解决方法：进入freetype头文件中修改，主要修改freetype2对应的头文件
+		            在编译我们自己写的图像处理程序时找不到头文件
+			    解决方法：进入freetype头文件中修改，主要修改freetype2对应的头文件
 
-			下载zlib官方源码
-				./configure –prefix=/home/lin/zlib
-				make
-				sudo make install
+		下载zlib官方源码
+			./configure –prefix=/home/lin/zlib
+			make
+			sudo make install
 
-		交叉编译freetype，zlib库（arm）
-			下载freetype官方源码，解压并进入目录
-				./configure CC=arm-none-linux-gnueabi-g++ --host=arm-linux --prefix=$PWD/_INSTALL --without-zlib
-				make
-				sudo make install
+	交叉编译freetype，zlib库（arm）
+		下载freetype官方源码，解压并进入目录
+			./configure CC=arm-none-linux-gnueabi-g++ --host=arm-linux --prefix=$PWD/_INSTALL --without-zlib
+			make
+			sudo make install
 
-			下载zlib官方源码，解压并进入目录
-				export CC=arm-linux-gnu-gcc
-				./configure --prefix=$PWD/_install
-				make && make install
+		下载zlib官方源码，解压并进入目录
+			export CC=arm-linux-gnu-gcc
+			./configure --prefix=$PWD/_install
+			make && make install
 
-			注意事项：	zlib库的configure不支持用CC变量来指定交叉工具链，需要执行export CC=arm-linux-gnu-gcc
+		注意事项：	zlib库的configure不支持用CC变量来指定交叉工具链，需要执行export CC=arm-linux-gnu-gcc
