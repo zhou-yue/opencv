@@ -1,0 +1,76 @@
+﻿项目实现：	在图像中添加文字（分别在x86架构和arm架构下实现）
+
+项目工具：	opencv3.0，freetype，zlib，cmake，qt，交叉编译工具链，putty
+
+项目流程：
+	x86架构	
+		图像上添加英文
+			1 搭建环境，安装第三方库opencv（参考安装编译文件夹下的opencv文档）
+			2 学习opencv库函数的使用
+			3 调用库函数编写程序（可参考代码img_add_word.cpp）
+			4 编写makefile编译程序（可参考代码makefile）
+			5 执行程序，可是现在图像上添加英文
+
+			问题：	opencv不支持中文，只能显示英文，中文会乱码
+					解决方法： 	a 链接文字库freetype
+								b 进行文字编码的转换
+								c 将插入的文字定义为宽字节
+								d 在网上下载opencv可支持中文的程序和头文件并进行相应修改
+
+					IplImage数据结构生成的图像过大
+					解决方法：	进行IplImage与Mat之间的转换
+
+		图像上插入中文（接着上面的环境继续操作）
+			1 安装编译freetype，zib库（参考安装编译文件夹下的freetype文档）
+			2 学习文字转码的转换，进行文字码制的转换（两种方法）
+				方法a 使用iconv系列函数实现将utf-8编码转为gb2312编码
+						iconv_open	iconv 	iconv_close
+				方法b 使用mbstowcs和wcstombs
+						安装配置文件	
+							sudo vim /var/lib/locales/supported.d/zh-hans
+							加入以下代码	zh_CN.UTF-8 UTF-8
+											zh_SG.UTF-8 UTF-8
+											zh_CN.GBK GBK
+											zh_CN.GB18030 GB18030
+							更新配置	sudo locale-gen
+							查看		locale -a
+						代码实现	utf-8 -> unicode -> gbk
+			3 将插入的文字定义为宽字节，定义插入的文字为wchar_t类型
+			4 修改下载的opencv可支持中文的程序和头文件，里面有一些语法错误，并设置字体的参数，设置为自己子想要的
+			5 在windows下拷贝C:\\WINDOWS\\Fonts目录下需要的字体到ubuntu下的相关目录
+			6 由于网上下载的文件中使用的是IplImage系列函数，但这样生成图片过大，需要在程序中进行IplImage与Mat之间的转换
+				a Mat img；
+					IplImage *src；
+					img = Mat（src）；
+					src = &IplImage（img）；
+				b cvarrToMat函数
+				注意事项：	方法1在opencv3.0版本以后可能已经不支持了
+			7 修改程序，调用相关函数，修改makefile（可参考代码）
+			8 编译运行
+
+	arm架构
+		编译程序生成可执行文件
+			1 安装交叉编译工具链（参考安装编译文件夹下的arm-tool-chain文档）
+			2 交叉编译opencv库（参考安装编译文件夹下的opencv文档）
+			3 交叉编译freetype库（参考安装编译文件夹下的freetype文档）
+			4 编写makefile编译程序
+			错误分析：	找不到头文件和库
+						解决方法：需要把所有用到的头文件和库文件复制一份放入交叉编译工具链下的include和lib文件夹下
+
+		移植可执行文件与相应的库到arm9开发板运行
+			1 在windows下利用串口工具获取板子ip（可在putty终端输入ifconfig命令获取）
+			2 Linux下安装putty工具
+				下载源码
+				cd unix
+				./configure
+				make -f Makefile.gtk
+				sudo make install
+			注意事项：	报错可能是需要安装GTK2.0版本以上
+			3 利用SSH协议与putty工具远程访问arm板的文件系统
+			4 通过scp命令可进行两个linux系统下的文件复制，将移植可执行文件与相应的库复制到arm9开发板
+				本地 -> 远程 ：scp 路径/文件 root@172.16.7.206:/home/root
+				远程 -> 本地 ：scp root@172.16.7.206:/home/root/文件 路径/文件
+			5 执行程序
+			错误分析：	找不到库 			解决方法：将执行时需要的动态库全部拷贝到板子的/lib目录下
+						不支持GLIBC_2.17	解决方法：2.17版本以前需要链接-lrt库
+						报错进程僵死 		解决方法：是因为找不到字体文件，导入对应的字体文件
