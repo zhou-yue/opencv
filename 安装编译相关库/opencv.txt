@@ -1,0 +1,53 @@
+工具：	opencv3.0，freetype，zlib，cmake，qt，交叉编译工具链，putty
+
+流程：	安装编译第三方库opencv(x86)
+			1 下载官方源码
+			2 安装编译工具：sudo apt-get install build-essential（安装gcc4.8以上版本）
+			3 安装 cmake、git、pkg-config等辅助工具：
+				sudo apt-get install cmake git pkg-config libgtk2.0-dev libavcodec-dev libavformat-dev libswscale-dev
+			4 安装关联库：sudo apt-get install python-dev python-opencv python-numpy libtbb2  \
+  						libtbb-dev libjpeg-dev libpng-dev libtiff-dev libjasper-dev libdc1394-22-dev
+  			5 安装qt
+  			6 创建目录，解压源码
+  				unzip opencv_3.0.0.zip
+  				cd opencv-3.0.0
+				mkdir release
+				cd release
+			7 编译源码
+				a 先使用cmake工具进行编译
+					cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D WITH_TBB=ON -D  \ BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=ON -D WITH_QT=ON -D WITH_OPENGL=ON ..
+				b 再使用make进行编译，最后sudo make install
+			8 设置环境变量
+				添加库路径：sudo /bin/bash -c 'echo "/usr/local/lib" > /etc/ld.so.conf.d/opencv.conf'
+				更新系统库：sudo ldconfig
+
+			错误分析：	cmake编译可能报错，检查一下cmake编译选项
+						make编译可能报错qmake，需要安装qt
+						gcc版本问题，版本过低可能编译不通过
+						make install可能报路径错误，添加对应路径
+
+		交叉编译opencv库(arm)
+			1 安装要使用的工具和库
+				与上述x86架构下一样，如安装过则不需要安装
+			2 创建目录，解压源码（同上）
+			3 使用cmake-gui配置图形界面
+				a 终端输入cmake-gui打开cmake的图形界面。在cmake的图形界面中输入OpenCV的源代码的所在路径和编译工作目录
+				b 点击Configure 选择工程类型，选择最后一个选项，配置为交叉编译，然后点击下一步Next
+				c 选择交叉编译工具和相关目录，然后点击Finsh
+					Operathing System：arm-linux
+					Compilers
+						C: .../bin/arm-linux-gcc	C++: .../bin/arm-linux-g++	（.../为交叉编译工具所在路径）
+				d 配置选项
+					去掉WITH_TIFF，以及opencl相关配置（3项全部划掉）以避免编译出错
+					修改CMAKE-INSTALL-PREFIX为最后生成的库文件的存放路径
+					修改CMAKE_EXE_LINKER_FLAGS值为-lpthread -lrt -ldl
+					（如果没有相关选项说明界面上的Advance选项没勾上，勾上即可）
+				e 点击Generate生成对应的makefile文件，存放于之前配置项Wher to build the binarier设置的文件夹下
+			4 编译	
+				make
+				sudo make install
+
+			注意事项：	需要设置make install的路径
+						需要将没有用到的选项勾掉，不然编译不通过
+				 		需要链接依赖的库	-pthread -lrt -ldl
+						但仍可能报错，按以上步骤重新配置，重新编译即可
