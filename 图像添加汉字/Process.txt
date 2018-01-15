@@ -28,7 +28,7 @@
 				方法b 使用mbstowcs和wcstombs
 					安装配置文件	
 						sudo vim /var/lib/locales/supported.d/zh-hans
-						加入以下代码	   zh_CN.UTF-8 UTF-8
+						加入以下代码     zh_CN.UTF-8 UTF-8
 								zh_SG.UTF-8 UTF-8
 								zh_CN.GBK GBK
 								zh_CN.GB18030 GB18030
@@ -71,6 +71,6 @@
 				本地 -> 远程 ：scp 路径/文件 root@172.16.7.206:/home/root
 				远程 -> 本地 ：scp root@172.16.7.206:/home/root/文件 路径/文件
 			5 执行程序
-			错误分析：	找不到库 			解决方法：将执行时需要的动态库全部拷贝到板子的/lib目录下
-						不支持GLIBC_2.17	解决方法：2.17版本以前需要链接-lrt库
-						报错进程僵死 		解决方法：是因为找不到字体文件，导入对应的字体文件
+			错误分析：	找不到库 	       解决方法：将执行时需要的动态库全部拷贝到板子的/lib目录下
+				    不支持GLIBC_2.17   解决方法：2.17版本以前需要链接-lrt库
+				    报错进程僵死 	  解决方法：是因为找不到字体文件，导入对应的字体文件
