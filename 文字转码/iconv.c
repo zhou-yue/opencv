@@ -10,12 +10,12 @@
 
 /*
 * iconv_open	iconv_t iconv_open(const char *tocode, const char *fromcode);
-*				返回一个转换句柄,供以下两个函数使用
-* icovt_t		size_t iconv(iconv_t cd,char **inbuf,size_t *inbytesleft,char **outbuf,size_t *outbytesleft);
-*				从inbuf中读取字符,转换后输出到outbuf中
-*				inbytesleft用以记录还未转换的字符数,outbytesleft用以记录输出缓冲的剩余空间
+*		返回一个转换句柄,供以下两个函数使用
+* icovt_t	size_t iconv(iconv_t cd,char **inbuf,size_t *inbytesleft,char **outbuf,size_t *outbytesleft);
+*		从inbuf中读取字符,转换后输出到outbuf中
+*		inbytesleft用以记录还未转换的字符数,outbytesleft用以记录输出缓冲的剩余空间
 * icovt_close	int iconv_close(iconv_t cd);
-*				关闭转换句柄,释放资源
+*		关闭转换句柄,释放资源
 */
 
 /* 
