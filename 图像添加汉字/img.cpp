@@ -1,5 +1,4 @@
 #include <iostream>
-//#include </home/armopencv/include/opencv2/opencv.hpp>
 #include <opencv2/opencv.hpp>
 #include "CvxText.h" 
 #include <time.h>
