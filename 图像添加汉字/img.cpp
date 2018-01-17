@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
 	IplImage *image = cvLoadImage(argv[1]); 
 
 	CvxText text("simhei.ttf"); 		//"zenhei.ttf"为黑体常规  
-	float p = 0.5;  
+	float p = 0.5;  			//修改透明度
 	text.setFont(NULL, NULL, NULL, &p);
 	text.putText(image, intbuf, cvPoint(500, 400), CV_RGB(0, 0, 0));
 
@@ -37,9 +37,9 @@ int main(int argc, char *argv[])
 
 	namedWindow("效果图",0);
 	cv::imshow("效果图",newimg);		//显示效果图
-	cv::waitKey(-1);					//按任意键关闭图片
+	cv::waitKey(-1);			  //按任意键关闭图片
 	cv::destroyWindow("效果图");
-	cvReleaseImage(&image);				//销毁窗口，释放对象
+	cvReleaseImage(&image);			  //销毁窗口，释放对象
 
 	return 0;  
 } 
