@@ -42,3 +42,4 @@ int transcod(char *pint,char *pout)
 	*(pout + 1) = '\0';	//结束符
 
 	return 0;
+}
